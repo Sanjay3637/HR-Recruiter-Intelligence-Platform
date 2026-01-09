@@ -98,8 +98,8 @@ const AppContent: React.FC = () => {
         <div className="w-full h-full overflow-y-auto no-scrollbar">
           <Routes>
             <Route path="/" element={<Landing onRegisterClick={() => navigate('/register')} onLoginClick={() => navigate('/login')} />} />
-            <Route path="/register" element={<Register onSuccess={handleAuthSuccess} onLoginClick={() => navigate('/login')} />} />
-            <Route path="/login" element={<Login onSuccess={handleAuthSuccess} onRegisterClick={() => navigate('/register')} />} />
+            <Route path="/register" element={<Register onSuccess={handleAuthSuccess} onLoginClick={() => navigate('/login', { replace: true })} />} />
+            <Route path="/login" element={<Login onSuccess={handleAuthSuccess} onRegisterClick={() => navigate('/register', { replace: true })} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

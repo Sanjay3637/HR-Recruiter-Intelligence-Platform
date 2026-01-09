@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { db } from '../services/db';
 import { Page } from '../types';
 
@@ -9,6 +9,7 @@ interface RegisterProps {
 }
 
 const Register: React.FC<RegisterProps> = ({ onSuccess, onLoginClick }) => {
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -41,8 +42,8 @@ const Register: React.FC<RegisterProps> = ({ onSuccess, onLoginClick }) => {
             <header className="sticky top-0 z-50 w-full border-b border-[#e6e9f4] dark:border-gray-800 bg-surface-light/90 dark:bg-background-dark/90 backdrop-blur-md transition-colors">
                 <div className="flex justify-center">
                     <div className="flex w-full max-w-[1280px] items-center justify-between px-4 py-4 md:px-10">
-                        <div className="flex items-center gap-3 text-primary dark:text-white cursor-pointer" onClick={() => window.location.href = '/'}>
-                            <div className="size-10 flex items-center justify-center bg-gradient-to-br from-[#0d33f2] to-[#1e40af] rounded-xl shadow-md">
+                        <div className="flex items-center gap-3 text-primary dark:text-white cursor-pointer group" onClick={() => navigate('/')}>
+                            <div className="size-10 flex items-center justify-center bg-gradient-to-br from-[#0d33f2] to-[#1e40af] rounded-xl shadow-md group-hover:scale-105 transition-transform">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 2L4 7V17L12 22L20 17V7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     <circle cx="12" cy="12" r="3" fill="white" />
