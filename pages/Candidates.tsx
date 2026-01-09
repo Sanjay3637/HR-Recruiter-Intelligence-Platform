@@ -60,60 +60,60 @@ const Candidates: React.FC<CandidatesProps> = ({ onCandidateClick }) => {
   // Helper function to parse date from various formats
   const parseDate = (dateString: string): Date | null => {
     if (!dateString) return null;
-    
+
     // Try parsing common date formats
     const date = new Date(dateString);
     if (!isNaN(date.getTime())) {
       return date;
     }
-    
+
     // Try parsing formats like "Jan 9, 2026"
     const parsed = Date.parse(dateString);
     if (!isNaN(parsed)) {
       return new Date(parsed);
     }
-    
+
     return null;
   };
 
   // Helper function to check if date matches filter
   const matchesDateFilter = (candidateDate: string): boolean => {
     if (filterDateRange === 'All') return true;
-    
+
     const candidateDateObj = parseDate(candidateDate);
     if (!candidateDateObj) return true; // If can't parse, include it
-    
+
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const candidateDateOnly = new Date(candidateDateObj.getFullYear(), candidateDateObj.getMonth(), candidateDateObj.getDate());
-    
+
     switch (filterDateRange) {
       case 'Today':
         return candidateDateOnly.getTime() === today.getTime();
-      
+
       case 'Last 7 Days':
         const sevenDaysAgo = new Date(today);
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
         return candidateDateOnly >= sevenDaysAgo && candidateDateOnly <= today;
-      
+
       case 'Last 30 Days':
         const thirtyDaysAgo = new Date(today);
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         return candidateDateOnly >= thirtyDaysAgo && candidateDateOnly <= today;
-      
+
       case 'This Month':
         const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return candidateDateOnly >= firstDayOfMonth && candidateDateOnly <= today;
-      
+
       case 'Last Month':
         const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
         const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
         return candidateDateOnly >= firstDayLastMonth && candidateDateOnly <= lastDayLastMonth;
-      
+
       case 'This Year':
         const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
         return candidateDateOnly >= firstDayOfYear && candidateDateOnly <= today;
-      
+
       default:
         return true;
     }
@@ -158,18 +158,26 @@ const Candidates: React.FC<CandidatesProps> = ({ onCandidateClick }) => {
               )}
             </div>
 
-            <div className="relative w-full lg:min-w-[350px] group">
+            <div className="relative w-full lg:min-w-[400px] h-[60px] bg-background-main hover:bg-blue-50/50 rounded-2xl transition-all border border-transparent hover:border-blue-100 group cursor-pointer flex items-center px-6">
+              <span className="text-lg md:text-xl font-bold text-text-main tracking-tight block truncate pr-10 pointer-events-none">
+                {selectedJob?.title || 'Select Role'}
+              </span>
+
               <select
                 value={selectedJobId || ''}
                 onChange={(e) => handleJobChange(e.target.value)}
-                className="w-full appearance-none bg-background-main hover:bg-blue-50/50 border-none rounded-2xl px-6 py-4 pr-12 text-lg md:text-xl font-bold text-text-main focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer tracking-tight"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                aria-label="Select Role"
               >
                 {jobs.map(job => (
                   <option key={job.id} value={job.id}>{job.title}</option>
                 ))}
                 {jobs.length === 0 && <option disabled>No jobs available</option>}
               </select>
-              <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none text-2xl group-hover:text-primary transition-colors">expand_more</span>
+
+              <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center text-text-tertiary group-hover:text-primary transition-colors">
+                <span className="material-symbols-outlined text-[28px]">expand_more</span>
+              </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-[11px] md:text-xs text-text-secondary mt-1 ml-1">
